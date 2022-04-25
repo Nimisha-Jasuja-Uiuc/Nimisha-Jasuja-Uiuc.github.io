@@ -1,0 +1,60 @@
+# %% [markdown]
+# Assignment10
+Try editing this cell by clicking the pencil on the left!
+# %% [javascript]
+// these are import calls for specific packages that we need to use vega-lite
+await import("https://cdn.jsdelivr.net/npm/vega@5.20.2/build/vega.min.js");
+await import("https://cdn.jsdelivr.net/npm/vega-lite@5.1.0/build/vega-lite.min.js");
+await import("https://cdn.jsdelivr.net/npm/vega-embed@6.18.2/build/vega-embed.min.js");
+// NOTE: we can set this to run on notebook start up if we want to make sure things load automatically
+# %% [javascript]
+vegaEmbed
+
+# %% [html]
+<div id="plot2"></div>
+# %% [javascript]
+var plot2 = {
+  data: {"url":"https://sds-platform-private.s3-us-east-2.amazonaws.com/uploads/P1-UK-Bank-Customers.csv"},
+  hconcat:[
+    { // plot 1
+      	"params": [{"name": "pts", "select": "interval"}],
+
+	    // Marks
+  		mark:"rect",
+  		height:"200",
+        width:"200",
+  		encoding:{
+    		"y":{"bin":{"maxbins":10}, "field":"Balance", "type":"quantitative"},
+    		"x":{"field":"Region","type":"nominal"},
+    		"color":{"aggregate":"count", "type":"quantitative"} 
+  }
+    }, // end plot 1
+    { // plot 2
+  		// Marks
+      	  transform:[{"filter":{"param":"pts"}}], 
+  		  mark: "bar",
+      	  height:"400",
+          width:"400",
+
+
+  		encoding:{
+    		"x":{"field":"Gender", "type":"ordinal",  "axis":{"title":"Gender count"}},
+    		"y":{"aggregate":"count","type":"quantitative", "axis":{"title":"Distribution of Account Balance"}}
+  }    
+    } // end plot 2
+
+
+  ] 
+  
+};
+var v = vegaEmbed('#plot2',plot2);
+# %% [markdown]
+Explanation of plot above -
+
+I got the above dataset on the url “<https://sds-platform-private.s3-us-east-2.amazonaws.com/uploads/P1-UK-Bank-Customers.csv>“. I will be using the same dataset for my project, I found this URL (mentioned as a suggestion) while doing part 1 of the project. 
+
+\
+The data depicts information of customers of bank. Each record shows the details of a customer like their gender, age, balance, region where they live, customer id, date joined and so on. These are the general information that is gathered by every bank.  The above plot is an interactive plot built on Vega-lite. The plot on left is a heatmap that shows account balances of customers segregated by region staring from zero dollars to $200,000, finally they are colored on the basis of count of record ( meaning how many clients fit under a specific region and bank balance). The plot on the right is a simple bar plot that counts the number of male and females. Since the overall plot is interactive. When we select a particular region on the left plot, the male and female customers who fit the selection are counted and depicted on the right plot. For every unique selection on left plot the right plot will change simultaneously.
+
+\
+For the left plot I used ‘rect’ marks since I wanted a heatmap type layout and for the right plot I used “bar” marks since I wanted to draw a bar plot that counts the number of male and female.
