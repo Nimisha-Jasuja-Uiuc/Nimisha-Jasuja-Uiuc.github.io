@@ -53,7 +53,7 @@
 Variable value: [Display value:myVar /]
 
 
-## Component 5 - Table
+## Table
 [data name:"table1" source:"P1-UK-Bank-Customers.csv" /]
 
 [Table data:table1 /]
